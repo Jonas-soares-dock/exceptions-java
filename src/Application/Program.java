@@ -36,25 +36,20 @@ public class Program {
 			System.out.print("Whats the Check-out Date (dd/MM/yyyy)? ");
 			out = format.parse(teclado.next());
 			
-			Date now = new Date();
+			String error = reservation.updateDates(in, out);
 			
-			
-			if(!out.after(in)) {
-				System.out.println("Error in reservation: Check-out date must be after check-in date.");
+			if (error != null) {
+				System.out.println("Error in reservation: "+ error);
 			}
 			else {
-				if (in.before(now) || out.before(now)) {
-					System.out.println("Error in reservation: Reservation dates for updates must be future.");
-				}
-				else {
-					reservation.updateDates(in, out);
-					System.out.println("Reservation: " + reservation);
-				}
+			
+				System.out.println("Reservation: " + reservation);
 				
 			}
-		}
+		
 		
 		teclado.close();
-	}
+	 }
+  }
 
 }
