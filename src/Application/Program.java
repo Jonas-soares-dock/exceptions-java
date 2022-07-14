@@ -6,26 +6,24 @@ import java.util.Date;
 import java.util.Scanner;
 
 import model.entities.Reservation;
+import model.exceptions.DomainException;
 
 public class Program {
 
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args)  {
 		
 		Scanner teclado = new Scanner (System.in);
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		
-		System.out.print("Please enter a Room Number: ");
-		int roomN = teclado.nextInt();
-		System.out.print("Whats the Check-in Date (dd/MM/yyyy)? ");
-		Date in = format.parse(teclado.next());
-		System.out.print("Whats the Check-out Date (dd/MM/yyyy)? ");
-		Date out = format.parse(teclado.next());
+		try {
+			System.out.print("Please enter a Room Number: ");
+			int roomN = teclado.nextInt();
+			System.out.print("Whats the Check-in Date (dd/MM/yyyy)? ");
+			Date in = format.parse(teclado.next());
+			System.out.print("Whats the Check-out Date (dd/MM/yyyy)? ");
+			Date out = format.parse(teclado.next());
+
 		
-		if(!out.after(in)) {
-			
-			System.out.println("Error in reservation: Check-out date must be after check-in date.");
-		}
-		else {
 			Reservation reservation = new Reservation(roomN, in, out);
 			System.out.println("Reservation: " + reservation);
 			
@@ -36,20 +34,24 @@ public class Program {
 			System.out.print("Whats the Check-out Date (dd/MM/yyyy)? ");
 			out = format.parse(teclado.next());
 			
-			String error = reservation.updateDates(in, out);
+			reservation.updateDates(in, out);
+			System.out.println("Reservation: " + reservation);	
 			
-			if (error != null) {
-				System.out.println("Error in reservation: "+ error);
-			}
-			else {
-			
-				System.out.println("Reservation: " + reservation);
-				
-			}
+		}
+		catch (ParseException e) {
+			System.out.println("Invalid date Format");
+		}
+		catch (DomainException i) {
+			System.out.println("Error in reservation: "+ i.getMessage());
+		}
+		catch (RuntimeException r) {
+			System.out.println("Unexpected error");
+		}
 		
+	
 		
 		teclado.close();
-	 }
+	 
   }
 
 }
